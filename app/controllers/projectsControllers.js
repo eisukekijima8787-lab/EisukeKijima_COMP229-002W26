@@ -1,10 +1,10 @@
-import projectsModel from '../models/projectsModel.js';
+let ProjectsModel = require('../models/projects');
 
-export const processAdd = async (req, res, next) => {
+module.exports.processAdd = async function (req, res, next) {
     try {
-        let newProject = new projectsModel(req.body);
+        let newProject = new ProjectsModel(req.body);
 
-        let result = await projectsModel.create(newProject);
+        let result = await ProjectsModel.create(newProject);
         console.log(result);
 
         res.status(200)
@@ -17,13 +17,29 @@ export const processAdd = async (req, res, next) => {
         console.log(error);
         next(error);
     }
+
 }
 
-export const getById = async (req, res, next) => {
+module.exports.list = async function (req, res, next) {
+    try {
+        let list = await ProjectsModel.find({});
+
+        res.json({
+            success: true,
+            message: "Projects list retrieved successfully.",
+            data: list
+        });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
+
+module.exports.getById = async function (req, res, next) {
     try {
         let id = req.params.id;
 
-        let project = await projectsModel.findOne({ _id: id });
+        let project = await ProjectsModel.findOne({ _id: id });
         if (!project)
             throw new Error('Project not found. Are you sure it exists?');
 
@@ -38,13 +54,13 @@ export const getById = async (req, res, next) => {
     }
 }
 
-export const processEdit = async (req, res, next) => {
+module.exports.processEdit = async function (req, res, next) {
     try {
         let id = req.params.id;
-        let updatedProject = new projectsModel(req.body);
+        let updatedProject = new ProjectsModel(req.body);
         updatedProject._id = id;
 
-        let result = await projectsModel.updateOne({ _id: id }, updatedProject);
+        let result = await ProjectsModel.updateOne({ _id: id }, updatedProject);
         console.log(result);
 
         if (result.modifiedCount > 0) {
@@ -64,11 +80,12 @@ export const processEdit = async (req, res, next) => {
     }
 }
 
-export const performDelete = async (req, res, next) => {
+
+module.exports.performDelete = async function (req, res, next) {
     try {
         let id = req.params.id;
 
-        let result = await projectsModel.deleteOne({ _id: id });
+        let result = await ProjectsModel.deleteOne({ _id: id });
         console.log(result);
 
         if (result.deletedCount > 0) {
@@ -82,21 +99,6 @@ export const performDelete = async (req, res, next) => {
             // Express will catch this on its own.
             throw new Error('Project not deleted. Are you sure the id is correct?')
         }
-    } catch (error) {
-        console.log(error);
-        next(error);
-    }
-}
-
-export async function list(req, res, next) {
-    try {
-        let list = await projectsModel.find({});
-
-        res.json({
-            success: true,
-            message: "Projects list retrieved successfully.",
-            data: list
-        });
     } catch (error) {
         console.log(error);
         next(error);

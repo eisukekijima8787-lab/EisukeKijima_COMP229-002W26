@@ -1,10 +1,10 @@
-import usersModel from '../models/usersModel.js';
+let UsersModel = require('../models/users');
 
-export const processAdd = async(req, res, next) => {
+module.exports.processAdd = async function (req, res, next) {
     try {
-        let newUser = new usersModel(req.body);
+        let newUser = new UsersModel(req.body);
 
-        let result = await usersModel.create(newUser);
+        let result = await UsersModel.create(newUser);
         console.log(result);
 
         res.status(200)
@@ -17,13 +17,29 @@ export const processAdd = async(req, res, next) => {
         console.log(error);
         next(error);
     }
+
 }
 
-export const getById = async(req, res, next) => {
+module.exports.list = async function (req, res, next) {
+    try {
+        let list = await UsersModel.find({});
+
+        res.json({
+            success: true,
+            message: "Users list retrieved successfully.",
+            data: list
+        });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
+
+module.exports.getById = async function (req, res, next) {
     try {
         let id = req.params.id;
 
-        let user = await usersModel.findOne({ _id: id });
+        let user = await UsersModel.findOne({ _id: id });
         if (!user)
             throw new Error('User not found. Are you sure it exists?');
 
@@ -38,13 +54,13 @@ export const getById = async(req, res, next) => {
     }
 }
 
-export const processEdit = async(req, res, next) => {
+module.exports.processEdit = async function (req, res, next) {
     try {
         let id = req.params.id;
-        let updatedUser = new usersModel(req.body);
+        let updatedUser = new UsersModel(req.body);
         updatedUser._id = id;
 
-        let result = await usersModel.updateOne({ _id: id }, updatedUser);
+        let result = await UsersModel.updateOne({ _id: id }, updatedUser);
         console.log(result);
 
         if (result.modifiedCount > 0) {
@@ -64,11 +80,12 @@ export const processEdit = async(req, res, next) => {
     }
 }
 
-export const performDelete = async(req, res, next) => {
+
+module.exports.performDelete = async function (req, res, next) {
     try {
         let id = req.params.id;
 
-        let result = await usersModel.deleteOne({ _id: id });
+        let result = await UsersModel.deleteOne({ _id: id });
         console.log(result);
 
         if (result.deletedCount > 0) {
@@ -82,21 +99,6 @@ export const performDelete = async(req, res, next) => {
             // Express will catch this on its own.
             throw new Error('User not deleted. Are you sure the id is correct?')
         }
-    } catch (error) {
-        console.log(error);
-        next(error);
-    }
-}
-
-export const list = async(req, res, next) => {
-    try {
-        let list = await usersModel.find({});
-
-        res.json({
-            success: true,
-            message: "Users list retrieved successfully.",
-            data: list
-        });
     } catch (error) {
         console.log(error);
         next(error);

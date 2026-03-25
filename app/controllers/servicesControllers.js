@@ -1,10 +1,10 @@
-import servicesModel from '../models/servicesModel.js';
+let ServicesModel = require('../models/services');
 
-export const processAdd = async(req, res, next) => {
+module.exports.processAdd = async function (req, res, next) {
     try {
-        let newService = new servicesModel(req.body);
+        let newService = new ServicesModel(req.body);
 
-        let result = await servicesModel.create(newService);
+        let result = await ServicesModel.create(newService);
         console.log(result);
 
         res.status(200)
@@ -17,13 +17,29 @@ export const processAdd = async(req, res, next) => {
         console.log(error);
         next(error);
     }
+
 }
 
-export const getById = async(req, res, next) => {
+module.exports.list = async function (req, res, next) {
+    try {
+        let list = await ServicesModel.find({});
+
+        res.json({
+            success: true,
+            message: "Services list retrieved successfully.",
+            data: list
+        });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
+
+module.exports.getById = async function (req, res, next) {
     try {
         let id = req.params.id;
 
-        let service = await servicesModel.findOne({ _id: id });
+        let service = await ServicesModel.findOne({ _id: id });
         if (!service)
             throw new Error('Service not found. Are you sure it exists?');
 
@@ -38,13 +54,13 @@ export const getById = async(req, res, next) => {
     }
 }
 
-export const processEdit = async(req, res, next) => {
+module.exports.processEdit = async function (req, res, next) {
     try {
         let id = req.params.id;
-        let updatedService = new servicesModel(req.body);
+        let updatedService = new ServicesModel(req.body);
         updatedService._id = id;
 
-        let result = await servicesModel.updateOne({ _id: id }, updatedService);
+        let result = await ServicesModel.updateOne({ _id: id }, updatedService);
         console.log(result);
 
         if (result.modifiedCount > 0) {
@@ -64,11 +80,12 @@ export const processEdit = async(req, res, next) => {
     }
 }
 
-export const performDelete = async(req, res, next) => {
+
+module.exports.performDelete = async function (req, res, next) {
     try {
         let id = req.params.id;
 
-        let result = await servicesModel.deleteOne({ _id: id });
+        let result = await ServicesModel.deleteOne({ _id: id });
         console.log(result);
 
         if (result.deletedCount > 0) {
@@ -82,21 +99,6 @@ export const performDelete = async(req, res, next) => {
             // Express will catch this on its own.
             throw new Error('Service not deleted. Are you sure the id is correct?')
         }
-    } catch (error) {
-        console.log(error);
-        next(error);
-    }
-}
-
-export const list = async(req, res, next) => {
-    try {
-        let list = await servicesModel.find({});
-
-        res.json({
-            success: true,
-            message: "Services list retrieved successfully.",
-            data: list
-        });
     } catch (error) {
         console.log(error);
         next(error);
