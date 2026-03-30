@@ -1,6 +1,6 @@
 let mongoose = require('mongoose');
 
-let projectsModel = mongoose.Schema(
+let projectsModels = mongoose.Schema(
     {
         title: String,
         completion: Date, 
@@ -12,7 +12,7 @@ let projectsModel = mongoose.Schema(
 );
 
 // Ensure virtual fields are serialised.
-projectsModel.set('toJSON', {
+projectsModels.set('toJSON', {
     virtuals: true,
     versionKey: false,
     transform: function (doc, ret) {
@@ -20,4 +20,4 @@ projectsModel.set('toJSON', {
     }
 });
 
-module.exports = mongoose.model("Projects", projectsModel);
+module.exports = mongoose.model("Projects", projectsModels);

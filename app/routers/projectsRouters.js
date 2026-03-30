@@ -1,8 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-let projectsController = require('../controllers/projects')
-let authController = require('../controllers/auth');
+let projectsController = require('../controllers/projectsControllers');
 
 router.get('/', 
     // authController.logToken, authController.validateToken,  

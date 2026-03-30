@@ -1,4 +1,4 @@
-let ProjectsModel = require('../models/projects');
+let ProjectsModel = require('../models/projectsModels');
 
 module.exports.processAdd = async function (req, res, next) {
     try {

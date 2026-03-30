@@ -1,4 +1,4 @@
-let ContactsModel = require('../models/contacts');
+let ContactsModel = require('../models/contactsModels');
 
 module.exports.processAdd = async function (req, res, next) {
     try {

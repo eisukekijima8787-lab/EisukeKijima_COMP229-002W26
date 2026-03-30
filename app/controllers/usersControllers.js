@@ -1,4 +1,4 @@
-let UsersModel = require('../models/users');
+let UsersModel = require('../models/usersModels');
 
 module.exports.processAdd = async function (req, res, next) {
     try {

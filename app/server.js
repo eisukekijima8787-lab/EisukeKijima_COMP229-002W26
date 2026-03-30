@@ -1,5 +1,9 @@
+require('dotenv').config();
+
+//let configDB = require('./config/mongoDB');
 let configDB = require('./config/mongoDB');
-let app = require("./config/express");
+//let app = require("./config/express");
+let app = require('./config/express');
 let http = require('http');
 
 configDB().catch(console.dir);

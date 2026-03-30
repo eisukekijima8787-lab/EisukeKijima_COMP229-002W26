@@ -2,7 +2,7 @@ let mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 let crypto = require('crypto');
 
-const UserSchema = new Schema(
+const UsersSchema = new Schema(
     {
         firstName: String,
         lastName: String,
@@ -43,7 +43,7 @@ const UserSchema = new Schema(
     }
 );
 
-UserSchema.virtual('fullName')
+UsersSchema.virtual('fullName')
     .get(function () {
         return this.firstName + ' ' + this.lastName;
     })
@@ -53,7 +53,7 @@ UserSchema.virtual('fullName')
         this.lastName = splitName[1] || '';
     });
 
-UserSchema.virtual('password')
+UsersSchema.virtual('password')
   .set(function (password) {
     if (password.length < 6) {
       throw new Error('Password must be at least 6 characters.')
@@ -64,16 +64,16 @@ UserSchema.virtual('password')
     }
   });
 
-UserSchema.methods.hashPassword = function (password) {
+UsersSchema.methods.hashPassword = function (password) {
   return crypto.pbkdf2Sync(password, this.salt, 10000, 64, 'sha512').toString('base64');
 }
 
-UserSchema.methods.authenticate = function (password) {
+UsersSchema.methods.authenticate = function (password) {
   return this.hashed_password === this.hashPassword(password);
 }
 
 // Ensure virtual fields are serialised.
-UserSchema.set('toJSON', {
+UsersSchema.set('toJSON', {
     virtuals: true,
     versionKey: false,
     transform: function (doc, ret) {
@@ -83,4 +83,4 @@ UserSchema.set('toJSON', {
     }
 });
 
-module.exports = mongoose.model("Users", UserSchema);
+module.exports = mongoose.model("Users", UsersSchema);

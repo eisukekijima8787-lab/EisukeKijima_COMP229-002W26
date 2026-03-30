@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-let usersController = require('../controllers/users')
+let usersController = require('../controllers/usersControllers')
 
 router.get('/', usersController.list);
 router.post('/', usersController.processAdd);

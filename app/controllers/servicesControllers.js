@@ -1,4 +1,4 @@
-let ServicesModel = require('../models/services');
+let ServicesModel = require('../models/servicesModels');
 
 module.exports.processAdd = async function (req, res, next) {
     try {
