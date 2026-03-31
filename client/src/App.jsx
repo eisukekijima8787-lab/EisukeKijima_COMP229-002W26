@@ -61,6 +61,12 @@ import Service from './projects/services';
 import Contact from './projects/contact';
 
 // 👇 先生のフォルダから安全にファイルを読み込みます
+/*import AddHome from './projects/components/AddHome';
+import ListHome from './projects/components/ListHome';
+import EditHome from './projects/components/EditHome';
+import ListHomeItem from './projects/components/ListHomeItem';
+import HomeForm from './projects/components/HomeForm';*/
+
 import AddProject from './projects/components/AddProject';
 import ListProject from './projects/components/ListProject';
 import EditProject from './projects/components/EditProject';
