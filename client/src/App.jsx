@@ -55,7 +55,7 @@ export default App;*/
 
 import React from 'react';
 import Home from './projects/Home';
-import User from './projects/aboutus';
+import User from './projects/aboutUs';
 import Project from './projects/project';
 import Service from './projects/services';
 import Contact from './projects/contact';
