@@ -1,12 +1,23 @@
 var express = require('express');
 var router = express.Router();
 
-let servicesController = require('../controllers/servicesControllers')
+let authController = require('../controllers/authControllers');
+let servicesController = require('../controllers/servicesControllers');
 
-router.get('/', servicesController.list);
-router.post('/', servicesController.processAdd);
-router.get('/:id', servicesController.getById);
-router.put('/:id', servicesController.processEdit);
-router.delete('/:id', servicesController.performDelete);
+router.get('/', 
+    authController.logToken, authController.validateToken,  
+    servicesController.list);
+router.post('/', 
+    authController.validateToken, 
+    servicesController.processAdd);
+router.get('/:id', 
+    authController.validateToken, 
+    servicesController.getById);
+router.put('/:id', 
+    authController.validateToken, 
+    servicesController.processEdit);
+router.delete('/:id', 
+    authController.validateToken, 
+    servicesController.performDelete);
 
 module.exports = router;

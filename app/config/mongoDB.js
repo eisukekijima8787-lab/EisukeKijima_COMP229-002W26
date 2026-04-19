@@ -17,4 +17,3 @@ module.exports = async function() {
     await mongoose.disconnect();
   }
 }
-// run().catch(console.dir);

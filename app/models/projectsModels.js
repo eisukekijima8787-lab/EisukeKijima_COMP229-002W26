@@ -1,10 +1,15 @@
 let mongoose = require('mongoose');
 
-let projectsModels = mongoose.Schema(
+let projectsModel = mongoose.Schema(
     {
         title: String,
-        completion: Date, 
-        description: String
+        completion: Date,
+        description: String,
+        // Adds relationship with User
+        owner: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Users"
+        }
     },
     {
         collection: "projects"
@@ -12,7 +17,7 @@ let projectsModels = mongoose.Schema(
 );
 
 // Ensure virtual fields are serialised.
-projectsModels.set('toJSON', {
+projectsModel.set('toJSON', {
     virtuals: true,
     versionKey: false,
     transform: function (doc, ret) {
@@ -20,4 +25,4 @@ projectsModels.set('toJSON', {
     }
 });
 
-module.exports = mongoose.model("Projects", projectsModels);
+module.exports = mongoose.model("Projects", projectsModel);

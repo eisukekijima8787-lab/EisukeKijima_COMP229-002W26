@@ -7,19 +7,20 @@ const app = express();
 
 let projectsRouters = require('../routers/projectsRouters');
 let usersRouters = require('../routers/usersRouters');
+let authRouters = require('../routers/authRouters');
 let servicesRouters = require('../routers/servicesRouters');
 let contactsRouters = require('../routers/contactsRouters');
 
 app.use(cors());
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/api/projectsRouters', projectsRouters);
-app.use('/api/usersRouters', usersRouters);
-app.use('/api/servicesRouters', servicesRouters);
-app.use('/api/contactsRouters', contactsRouters);
+app.use('/api/projects', projectsRouters);
+app.use('/api/users', usersRouters);
+app.use('/auth', authRouters);
+app.use('/api/services', servicesRouters);
+app.use('/api/contacts', contactsRouters);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
