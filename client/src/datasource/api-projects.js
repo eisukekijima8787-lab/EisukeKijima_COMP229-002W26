@@ -1,15 +1,15 @@
-//let apiURL = import.meta.env.VITE_APP_APIURL;
-//let endpoint = "/api/projectsRouters/"
-let apiURL = "http://localhost:3000";
-let endpoint = "/api/projects";
+import { getToken } from "../projects/auth/authHelper";
+let apiURL = import.meta.env.VITE_APP_APIURL;
+let endpoint = "api/projects/"
 
-const list = async () => {
+const list = async ()=>{
     try {
         let response = await fetch(apiURL + endpoint, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
             }
         })
         return await response.json();
@@ -18,15 +18,17 @@ const list = async () => {
     }
 }
 
-const create = async (project) => {
+const create = async (project)=>{
     try {
         let response = await fetch(apiURL + endpoint, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
             },
-            body: JSON.stringify(project)
+            //body: JSON.stringify(project)
+            body: JSON.stringify({name: project.projectName || project.name, description: project.description || project.desc, owner: project.owner || project.ownerId})
         })
         return await response.json();
     } catch (error) {
@@ -34,13 +36,14 @@ const create = async (project) => {
     }
 }
 
-const remove = async (id) => {
+const remove = async (id)=>{
     try {
         let response = await fetch(apiURL + endpoint + id, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
             }
         })
         return await response.json();
@@ -49,13 +52,14 @@ const remove = async (id) => {
     }
 }
 
-const update = async (project, id) => {
+const update = async (project, id)=>{
     try {
         let response = await fetch(apiURL + endpoint + id, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
             },
             body: JSON.stringify(project)
         })
@@ -65,13 +69,14 @@ const update = async (project, id) => {
     }
 }
 
-const readOne = async (id) => {
+const readOne = async (id)=>{
     try {
         let response = await fetch(apiURL + endpoint + id, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
             }
         })
         return await response.json();

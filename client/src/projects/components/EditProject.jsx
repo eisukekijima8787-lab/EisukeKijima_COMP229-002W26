@@ -91,7 +91,7 @@ const EditProject = () => {
   const handleUpdate = (e) => {
     e.preventDefault();
     if (!editName) {
-      alert('プロジェクト名を入力してください！');
+      alert('Enter the project name to update!');
       return;
     }
     alert(`「${editName}」に編集内容を保存しました！(API通信の準備完了)`);

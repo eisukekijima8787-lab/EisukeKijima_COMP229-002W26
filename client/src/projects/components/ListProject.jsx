@@ -1,28 +1,73 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { list } from '../../datasource/api-projects';
+import { Link } from "react-router-dom";
+import ListProjectItem from './ListProjectItem';
 
-const ListProject = () => {
-  // 📝 本来はデータベースから取ってくるデータを、仮でここに置いておきます（Read）
-  const projects = [
-    { id: 1, name: 'Project A', progress: '80%' },
-    { id: 2, name: 'Project B', progress: '50%' },
-    { id: 3, name: 'Project C', progress: '10%' }
-  ];
+function ListProject() {
+    const [projectList, setProjectList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-  return (
-    <div style={{ border: '2px solid blue', padding: '15px', marginTop: '10px', backgroundColor: '#fff', borderRadius: '5px' }}>
-      <h3 style={{ color: 'black', marginTop: 0 }}>📁 Project List</h3>
-      <p style={{ color: 'gray', fontSize: '25px' }}>Read 3 projects</p>
+    const loadProjects = () => {
+        list()
+            .then((res) => {
+                if (res.data) {
+                    setProjectList(res.data);
+                    setIsLoading(false);
+                }
+                else{
+                    alert(res.message);
+                }
+            })
+            .catch((err) => {
+                alert(err.message);
+                console.log(err);
+            });
+    }
 
-      <ul style={{ listStyleType: 'none', paddingLeft: '5px' }}>
-        {projects.map(project => (
-          <li key={project.id} style={{ padding: '8px 0', borderBottom: '1px solid #ddd', color: 'black', display: 'flex', justifyContent: 'space-between' }}>
-            <span>{project.name}</span>
-            <span style={{ color: 'brown' }}>Progress: {project.progress}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
+    const handleRemove = ()=>{
+        loadProjects();
+    }
+
+    useEffect(() => {
+        loadProjects();
+    }, []);
+
+    {!isLoading && console.log("Project List: ", projectList)}
+    return (
+        <div style={{ paddingTop: 80 }}>
+            <h1>Project List</h1>
+
+            <div>
+                <Link to="/project/add" className="btn btn-primary align-self-end" role="button">
+                    <i className="fas fa-plus-circle"></i>
+                    Add a new Item
+                </Link>
+            </div>
+            {isLoading && <div>Loading...</div>}
+            {!isLoading && projectList.length > 0 &&
+                <table className="table table-bordered table-striped table-hover">
+                    <thead>
+                        {/* -- Header Row-- */}
+                        <tr>
+                            <th className="text-center">Title</th>
+                            <th className="text-center">Completion</th>
+                            <th className="text-center">Description</th>
+                            <th className="text-center" colSpan="3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* -- Repeatable Template Row -- */}
+                        {projectList.map((project, i) => (
+                            <ListProjectItem 
+                                key={i} 
+                                project={project}
+                                onRemove={handleRemove}
+                            />
+                        ))}
+                    </tbody>
+                </table>}
+        </div>
+    );
+}
 
 export default ListProject;

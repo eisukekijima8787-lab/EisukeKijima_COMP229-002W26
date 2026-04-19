@@ -142,6 +142,7 @@ export default function AddProject() {
 
 
 import React, { useState } from 'react';
+import { create } from '../../datasource/api-projects';
 
 const AddProject = () => {
   const [projectName, setProjectName] = useState('');
@@ -152,17 +153,31 @@ const AddProject = () => {
       alert('Please enter the valid projects');
       return;
     }
-    
-    alert('「${projectName}」 was successfully added');
+
+    // 153行目 return; のすぐ下に追加
+const newProject = { name: projectName }; // サーバーが期待する名前でオブジェクトを作る
+
+create(newProject)
+  .then((res) => {
+    // サーバーへの送信が成功してからアラートを出す
+    alert(`${projectName} was successfully added!`);
     setProjectName(''); // 入力欄を空にする
+    navigate("/projects"); // プロジェクト一覧ページへ遷移
+  }).catch((err) => {
+    console.error("送信エラー:", err);
+    alert("Failed to save project. Please try again.");
+  });
+    
+    //alert(`${projectName} was successfully added!`);
+    //setProjectName(''); // 入力欄を空にする
   };
 
   return (
     <div style={{ border: '2px solid orange', padding: '15px', marginTop: '10px', backgroundColor: 'white', borderRadius: '5px' }}>
       <h3 style={{ color: 'black', marginTop: 0 }}>➕ Add New Project</h3>
-      <p style={{ color: 'gray', fontSize: '25px' }}>Create Project #1</p>
-      <p style={{ color: 'gray', fontSize: '25px' }}>Create Project #2</p>
-      <p style={{ color: 'gray', fontSize: '25px' }}>Create Project #3</p>
+      <p style={{ color: 'gray', fontSize: '25px' }}>Project #1</p>
+      <p style={{ color: 'gray', fontSize: '25px' }}>Project #2</p>
+      <p style={{ color: 'gray', fontSize: '25px' }}>Project #3</p>
       
       <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px' }}>
         <input 

@@ -1,5 +1,5 @@
 import { Outlet, NavLink, Link, useLocation } from "react-router-dom";
-//import image_logo from "../assets/image_logo.png"
+import image_logo from "../assets/aboutPicture1.jpg"
 export default function Layout() {
     return (
         <>
@@ -26,7 +26,7 @@ export default function Layout() {
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/about">
+                                <NavLink className="nav-link" to="/aboutUs">
                                     <i className="fas fa-home"></i> About
                                 </NavLink>
                             </li>
